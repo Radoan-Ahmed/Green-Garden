@@ -28,6 +28,7 @@ import 'package:food_recipe/features/profile_page/data/remote/get_user_info_remo
 import 'package:food_recipe/features/profile_page/data/repository_impl/get_user_info_repository_impl.dart';
 import 'package:food_recipe/features/profile_page/domain/repository/get_user_info_repository.dart';
 import 'package:food_recipe/features/profile_page/domain/usecase/get_user_info_usecase.dart';
+import 'package:food_recipe/features/profile_page/presentation/cubit/getUserInfoValidationCubit/get_user_info_validation_cubit.dart';
 import 'package:food_recipe/features/profile_page/presentation/cubit/getUserInfo_cubit.dart';
 import 'package:food_recipe/features/sign_up/data/remote/signin_remote.dart';
 import 'package:food_recipe/features/sign_up/data/repository_impl/signin_repository_impl.dart';
@@ -47,6 +48,7 @@ class Dependency{
   static Future<void> init() async{
 
     sl.registerFactory(() => LoginValidationCubit());
+    sl.registerFactory(() => GetUserInfoValidationCubit());
     sl.registerFactory(() => SignInValidationCubit());
     sl.registerFactory(() => ForgetPasswordValidationCubit());
 
