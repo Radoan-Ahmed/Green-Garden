@@ -1,5 +1,7 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_recipe/core/header_provider/header_provider.dart';
 import 'package:food_recipe/core/network/connection_checker.dart';
+import 'package:food_recipe/features/common/data/data_source/local/token_sorce.dart';
 import 'package:food_recipe/features/forget_password/data/remote/reset_password_api_remote.dart';
 import 'package:food_recipe/features/forget_password/data/remote/verify_email_code_remote.dart';
 import 'package:food_recipe/features/forget_password/data/remote/verify_email_remote.dart';
@@ -22,6 +24,11 @@ import 'package:food_recipe/features/login_page/domain/repository/login_reposito
 import 'package:food_recipe/features/login_page/domain/usecase/login_usecase.dart';
 import 'package:food_recipe/features/login_page/presentation/cubit/login_cubit.dart';
 import 'package:food_recipe/features/login_page/presentation/cubit/login_validation_cubit/login_validation_cubit.dart';
+import 'package:food_recipe/features/profile_page/data/remote/get_user_info_remote.dart';
+import 'package:food_recipe/features/profile_page/data/repository_impl/get_user_info_repository_impl.dart';
+import 'package:food_recipe/features/profile_page/domain/repository/get_user_info_repository.dart';
+import 'package:food_recipe/features/profile_page/domain/usecase/get_user_info_usecase.dart';
+import 'package:food_recipe/features/profile_page/presentation/cubit/getUserInfo_cubit.dart';
 import 'package:food_recipe/features/sign_up/data/remote/signin_remote.dart';
 import 'package:food_recipe/features/sign_up/data/repository_impl/signin_repository_impl.dart';
 import 'package:food_recipe/features/sign_up/domain/repository/signin_repository.dart';
@@ -29,6 +36,7 @@ import 'package:food_recipe/features/sign_up/domain/usecase/signin_usecase.dart'
 import 'package:food_recipe/features/sign_up/presentation/cubit/signin_api_cubit.dart';
 import 'package:food_recipe/features/sign_up/presentation/cubit/signin_validation_cubit/signin_validation_cubit.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Dependency{
   static final sl = GetIt.instance;
@@ -48,17 +56,22 @@ class Dependency{
       () => ConnectionCheckerImpl(),
     );
 
+    sl.registerLazySingleton<TokenSource>(() => TokenSourceImpl(sl()));
+    final sharedPref = await SharedPreferences.getInstance();
+    sl.registerLazySingleton(() => sharedPref);
+
 
 
   
     //.......... log in api cubit .......//
 
     sl.registerLazySingleton<LoginRemote>(
-      () => LoginRemoteImpl(sl<HeaderProvider>()),
+      () => LoginRemoteImpl(sl()),
     );
 
     sl.registerLazySingleton<LoginRepository>(
       () => LoginRepositoryImpl(
+        sl(),
         sl(),
         sl(),
       ),
@@ -147,9 +160,34 @@ class Dependency{
 
 
 
+    //.......... Get use info api cubit .......//
+
+    sl.registerLazySingleton<GetUserInfoRemote>(
+      () => GetUserInfoRemoteImpl(sl<AuthHeaderProvider>()),
+    );
+
+    sl.registerLazySingleton<GetUserInfoRepository>(
+      () => GetUserInfoRepositoryImpl(
+        sl(),
+        sl(),
+      ),
+    );
+    sl.registerLazySingleton(() => GetUserInfoUseCase(sl()));
+    sl.registerFactory(
+        () => GetUserInfoCubit(getUserInfoUseCase: sl()));
+
+    //................... end ..............//
+
+
+
+
   }
-  //  static final providers = <BlocProvider>[
-   
-  // ];
+  
+  static final providers = <BlocProvider>[
+    BlocProvider<LoginCubit>(
+      create: (context) => Dependency.sl<LoginCubit>(),
+    ),
+
+  ];
 
 }

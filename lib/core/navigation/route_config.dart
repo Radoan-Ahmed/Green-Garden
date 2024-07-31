@@ -12,6 +12,7 @@ import 'package:food_recipe/features/forget_password/presentation/screen/verify_
 import 'package:food_recipe/features/home_page/presentation/screen/home_screen.dart';
 import 'package:food_recipe/features/login_page/presentation/cubit/login_cubit.dart';
 import 'package:food_recipe/features/login_page/presentation/screen/login_screen.dart';
+import 'package:food_recipe/features/profile_page/presentation/cubit/getUserInfo_cubit.dart';
 import 'package:food_recipe/features/sign_up/presentation/cubit/signin_api_cubit.dart';
 import 'package:food_recipe/features/sign_up/presentation/cubit/signin_validation_cubit/signin_validation_cubit.dart';
 import 'package:food_recipe/features/sign_up/presentation/screen/signin_screen.dart';
@@ -209,6 +210,10 @@ class RouteConfig {
             BlocProvider<LoginValidationCubit>(
               create: (context) =>
                   Dependency.sl<LoginValidationCubit>(),
+            ),
+            BlocProvider<GetUserInfoCubit>(
+              create: (context) =>
+                  Dependency.sl<GetUserInfoCubit>(),
             ),
             
           ], child:HomeScreen());

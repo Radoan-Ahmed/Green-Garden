@@ -1,7 +1,6 @@
 
 abstract class _ApiConstants {
   static const prodApiUrl = 'https://green-gurdian.vercel.app';
- 
 }
 
 

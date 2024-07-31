@@ -13,5 +13,6 @@ class ApiConstants {
   static const verifyEmailApiUrl = "/auth/verify-email";
   static const verifyEmailCodeApiUrl = "/auth/verify-otp";
   static const resetPasswordApiUrl = "/auth/reset-password";
+  static const getUserInfoApiUrl = "/auth/verify";
 
 }

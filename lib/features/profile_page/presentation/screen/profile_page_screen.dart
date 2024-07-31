@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_recipe/core/resources/color_res.dart';
 import 'package:food_recipe/core/utils/custom_colors.dart';
 import 'package:food_recipe/features/common/widget/custom_textfield.dart';
+import 'package:food_recipe/features/profile_page/presentation/cubit/getUserInfo_cubit.dart';
 
 class ProfilePageScreen extends StatefulWidget {
   const ProfilePageScreen({super.key});
@@ -11,6 +13,11 @@ class ProfilePageScreen extends StatefulWidget {
 }
 
 class _ProfilePageScreenState extends State<ProfilePageScreen> {
+  @override
+  void initState() {
+    context.read<GetUserInfoCubit>().getUserInfo();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
