@@ -61,7 +61,6 @@ class Dependency{
       () => LoginRepositoryImpl(
         sl(),
         sl(),
-        sl(),
       ),
     );
     sl.registerLazySingleton(() => LoginUseCase(sl()));
